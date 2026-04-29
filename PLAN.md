@@ -208,3 +208,4 @@ Update this section after each phase or significant pause.
 
 - 2026-04-29: Plan written. SPEC, README, LICENSE in place. `.legacy-reference/` populated. Awaiting Phase 1 kickoff.
 - 2026-04-29: Phase 1 complete. Repo created at Battle-Creek-LLC/moot. Scaffold committed (root commit `d0aa8be`). CI run [25119628692](https://github.com/Battle-Creek-LLC/moot/actions/runs/25119628692) passed in 1m13s. GATE 1 reached.
+- 2026-04-29: Phase 2 complete. CLI tree scaffolded; all ten verbs print "not yet implemented" and exit 1. Commit `704f6b8`. CI run [25120194958](https://github.com/Battle-Creek-LLC/moot/actions/runs/25120194958) passed in 1m17s. GATE 2 reached.
