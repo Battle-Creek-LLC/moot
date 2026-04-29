@@ -14,21 +14,21 @@ This document drives the build of Moot v0.1.0 end-to-end. Read `SPEC.md` for des
 
 ## Phase 1 — Bootstrap
 
-- [ ] `gh repo create Battle-Creek-LLC/moot --public --description "Send a Recall.ai bot to a meeting, capture transcripts, generate notes"`
-- [ ] `cd /Users/jstockdi/projects/jstockdi/moot && git init && git branch -M main`
-- [ ] `git remote add origin git@github.com:Battle-Creek-LLC/moot.git`
-- [ ] `.gitignore` — standard Rust (`/target`, `Cargo.lock` kept since this is a binary), plus `.legacy-reference/` excluded? **No — keep `.legacy-reference/` in-tree and committed; it documents what we ported from.**
-- [ ] `Cargo.toml` — see "Cargo.toml dependencies" below
-- [ ] `rustfmt.toml` — empty file (use defaults) is fine
-- [ ] `clippy.toml` — empty file is fine
-- [ ] `Cross.toml` — pre-build hook installing `libdbus-1-dev:$CROSS_DEB_ARCH` for `aarch64-unknown-linux-gnu` (mirror `../terra/../repocat/Cross.toml`)
-- [ ] `CONTRIBUTING.md` — short: dev setup (`cargo build`, `cargo test`), conventional commit recommendation, MIT licensing of contributions
-- [ ] `CHANGELOG.md` — Keep-a-Changelog header + empty `## [Unreleased]` section
-- [ ] `.github/workflows/ci.yml` — mirror `../terra/../repocat/.github/workflows/ci.yml`. Ubuntu, install `libdbus-1-dev pkg-config`, `cargo build --locked --verbose`, `cargo test --locked --verbose`
-- [ ] `.github/workflows/release.yml` — mirror repocat's. Tag `v*` trigger, 5-target matrix (linux x86_64/aarch64, macos x86_64/aarch64, windows x86_64), `taiki-e/upload-rust-binary-action`. Append a `cargo publish` job that runs after the matrix on success, gated on `secrets.CARGO_REGISTRY_TOKEN`. Bin name: `moot`.
-- [ ] First commit: `chore: scaffold v0.1.0 project structure`
-- [ ] `git push -u origin main`
-- [ ] Confirm CI runs green on the empty crate
+- [x] `gh repo create Battle-Creek-LLC/moot --public --description "Send a Recall.ai bot to a meeting, capture transcripts, generate notes"`
+- [x] `cd /Users/jstockdi/projects/jstockdi/moot && git init && git branch -M main`
+- [x] `git remote add origin git@github.com:Battle-Creek-LLC/moot.git`
+- [x] `.gitignore` — standard Rust (`/target`, `Cargo.lock` kept since this is a binary), plus `.legacy-reference/` excluded? **No — keep `.legacy-reference/` in-tree and committed; it documents what we ported from.** (Minimal `.gitignore` containing just `/target`; nothing else needed yet — no IDE files, no env files in tree.)
+- [x] `Cargo.toml` — see "Cargo.toml dependencies" below
+- [x] `rustfmt.toml` — empty file (use defaults) is fine
+- [x] `clippy.toml` — empty file is fine
+- [x] `Cross.toml` — pre-build hook installing `libdbus-1-dev:$CROSS_DEB_ARCH` for `aarch64-unknown-linux-gnu` (mirror `../terra/../repocat/Cross.toml`)
+- [x] `CONTRIBUTING.md` — short: dev setup (`cargo build`, `cargo test`), conventional commit recommendation, MIT licensing of contributions
+- [x] `CHANGELOG.md` — Keep-a-Changelog header + empty `## [Unreleased]` section
+- [x] `.github/workflows/ci.yml` — mirror `../terra/../repocat/.github/workflows/ci.yml`. Ubuntu, install `libdbus-1-dev pkg-config`, `cargo build --locked --verbose`, `cargo test --locked --verbose`
+- [x] `.github/workflows/release.yml` — mirror repocat's. Tag `v*` trigger, 5-target matrix (linux x86_64/aarch64, macos x86_64/aarch64, windows x86_64), `taiki-e/upload-rust-binary-action`. Append a `cargo publish` job that runs after the matrix on success, gated on `secrets.CARGO_REGISTRY_TOKEN`. Bin name: `moot`. (Also brought across `dependency-review.yml` to mirror repocat fully.)
+- [x] First commit: `chore: scaffold v0.1.0 project structure`
+- [x] `git push -u origin main`
+- [x] Confirm CI runs green on the empty crate (run [25119628692](https://github.com/Battle-Creek-LLC/moot/actions/runs/25119628692), 1m13s)
 
 🚦 **GATE 1**: report CI run URL, confirm green. Then continue.
 
@@ -207,3 +207,4 @@ predicates = "3"
 Update this section after each phase or significant pause.
 
 - 2026-04-29: Plan written. SPEC, README, LICENSE in place. `.legacy-reference/` populated. Awaiting Phase 1 kickoff.
+- 2026-04-29: Phase 1 complete. Repo created at Battle-Creek-LLC/moot. Scaffold committed (root commit `d0aa8be`). CI run [25119628692](https://github.com/Battle-Creek-LLC/moot/actions/runs/25119628692) passed in 1m13s. GATE 1 reached.
