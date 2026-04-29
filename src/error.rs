@@ -54,4 +54,42 @@ impl Error {
     }
 }
 
+impl From<std::io::Error> for Error {
+    fn from(e: std::io::Error) -> Self {
+        Error::Fs(e.to_string())
+    }
+}
+
+impl From<rusqlite::Error> for Error {
+    fn from(e: rusqlite::Error) -> Self {
+        Error::Db(e.to_string())
+    }
+}
+
+impl From<reqwest::Error> for Error {
+    fn from(e: reqwest::Error) -> Self {
+        Error::Recall(e.to_string())
+    }
+}
+
+impl From<serde_json::Error> for Error {
+    fn from(e: serde_json::Error) -> Self {
+        // Spec doesn't have a Json variant; treat as Fs since we only hit this
+        // parsing local files / DB blobs at the boundary.
+        Error::Fs(format!("json: {e}"))
+    }
+}
+
+impl From<keyring::Error> for Error {
+    fn from(e: keyring::Error) -> Self {
+        Error::Keychain(e.to_string())
+    }
+}
+
+impl From<tera::Error> for Error {
+    fn from(e: tera::Error) -> Self {
+        Error::Notes(e.to_string())
+    }
+}
+
 pub type Result<T, E = Error> = std::result::Result<T, E>;
