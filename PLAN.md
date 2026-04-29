@@ -91,9 +91,9 @@ Order is dependency-driven. Each step ends with a green `cargo test`, a `CHANGEL
 
 ## Phase 4 — Release
 
-- [ ] User confirms smoke test passed (capture, notes generation, list/show/search all work).
-- [ ] Bump `Cargo.toml` → `version = "0.1.0"`.
-- [ ] Move `## [Unreleased]` content into `## [0.1.0] - YYYY-MM-DD` with today's date. Add a fresh empty `## [Unreleased]` block above it.
+- [x] User confirms smoke test passed (capture, notes generation, list/show/search all work).
+- [x] Bump `Cargo.toml` → `version = "0.1.0"`. (Already 0.1.0 from Phase 1; no bump needed.)
+- [x] Move `## [Unreleased]` content into `## [0.1.0] - YYYY-MM-DD` with today's date. Add a fresh empty `## [Unreleased]` block above it.
 - [ ] Commit: `chore: release v0.1.0`.
 - [ ] `git push origin main`.
 - [ ] `git tag v0.1.0 && git push origin v0.1.0`.

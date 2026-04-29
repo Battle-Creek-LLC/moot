@@ -7,12 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] — 2026-04-29
+
+First tagged release. Captures Recall.ai meetings into a local SQLite store,
+generates notes via the Claude CLI, and exports back to plain files.
+
 ### Added
 
-- CLI command tree: ten subcommands (`run`, `fetch`, `import`, `notes`,
-  `export`, `list`, `show`, `search`, `clean`, `secret`) with full flag sets
-  per SPEC §5. All execute paths print "not yet implemented" and exit 1
-  pending Phase 3.
+- CLI with ten subcommands (`run`, `fetch`, `import`, `notes`, `export`,
+  `list`, `show`, `search`, `clean`, `secret`) per SPEC §5.
 - `error` module with the seven-variant `thiserror` enum and stable exit
   codes per SPEC §10.
 - `logging` module wiring `tracing-subscriber` to `MOOT_LOG`,
@@ -71,3 +74,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Integration tests: `tests/migrations.rs`, `tests/import_export_roundtrip.rs`,
   `tests/search.rs`, plus a `MOOT_RECALL_INTEGRATION=1`-gated live
   Recall.ai auth check.
+- Pre-built binaries on each release for Linux (x86_64, aarch64), macOS
+  (x86_64, aarch64), and Windows (x86_64), via
+  `taiki-e/upload-rust-binary-action`.
+
+[0.1.0]: https://github.com/Battle-Creek-LLC/moot/releases/tag/v0.1.0
