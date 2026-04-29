@@ -49,3 +49,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and `--json` flags honored.
 - `list` command: filters `--since`, `--tag`, `--status`, `--limit`,
   `--all`. `cancelled` meetings are hidden by default.
+- `export` command: write `<slug>/{meeting.toml, transcript.{jsonl,md},
+  notes.md}` to a directory or stream a tar archive to stdout via
+  `--out -`. `--force` overwrites; `--format jsonl|md|all` selects subsets.
+- `search` command: snippet-style matches across `title`, `notes_md`,
+  `transcript_md` with `--in`, `--context`, `--no-snippets`, plus the same
+  filter flags as `list`.
+- `notes` command: regenerate notes for a captured meeting; refuses to
+  overwrite existing notes without `--force`.
+- `fetch` command: import a transcript by Recall.ai bot id; refuses
+  duplicates if the bot was already imported.
+- `run` command: full SPEC §5.1 flow — dispatch a bot, poll status with a
+  15s/5s/60s cadence, persist a `sessions.state_json` checkpoint each
+  status transition, fetch transcript on `done`, optionally generate
+  notes. Honors `--resume <id>`, `--dry-run`, and `--platform` override.
+  SIGINT triggers a graceful cancel (DELETE the bot, mark cancelled,
+  drop the session, exit 130); a second SIGINT exits immediately.
+- `clean` command: drop session rows for terminal meetings + sessions
+  stale >24h; cascade-delete meetings older than `--older-than`. `--dry-run`
+  counts without deleting.
+- Integration tests: `tests/migrations.rs`, `tests/import_export_roundtrip.rs`,
+  `tests/search.rs`, plus a `MOOT_RECALL_INTEGRATION=1`-gated live
+  Recall.ai auth check.

@@ -57,35 +57,35 @@ Order is dependency-driven. Each step ends with a green `cargo test`, a `CHANGEL
 
 ### Foundation modules
 
-- [ ] `src/store/mod.rs` — open DB at `paths::db_path()`. Apply migrations via `PRAGMA user_version`. Migration v1 = SPEC §3.2 schema. Set `journal_mode=WAL`, `foreign_keys=ON`. Functions: `insert_meeting`, `update_meeting`, `get_meeting(id_or_slug)`, `list_meetings(filters)`, `delete_meeting(id)`, `list_orphan_sessions()`, `upsert_session`, `delete_session`. Test: open in-memory, run migration, round-trip a meeting.
-- [ ] `src/recall/mod.rs` — port `.legacy-reference/meeting/recall.rs`. Adapt error type from `anyhow::Result` to our `Error`. Keep the same struct names (`RecallClient`, `BotStatus`, etc). Add a `RecallApi` trait so we can mock in tests.
-- [ ] `src/notes/mod.rs` — port `.legacy-reference/meeting/claude.rs`. Tera template rendering. Functions: `generate_notes(transcript_md, context, prompt_template) -> Result<String>`.
-- [ ] `prompts/notes.md.tera` — copy from `.legacy-reference/meeting/prompts/notes.md.tera`, embed via `include_str!`.
-- [ ] `src/bundle/mod.rs` — write `meeting.toml` + `transcript.jsonl` + `transcript.md` + `notes.md` to a target dir. Tar stream variant for `--out -`.
-- [ ] `src/session/mod.rs` — JSON serialize/deserialize for the `sessions.state_json` blob. Phase enum from SPEC §8.
-- [ ] `src/search/mod.rs` — `LIKE`-based across `title`, `notes_md`, `transcript_md`. Snippet extraction (`±--context` chars around each match). Multi-word AND. Score = match count.
-- [ ] Slug generation helper (in `store/` or `paths/`): title-slugified + ISO date; on collision append `-2`, `-3`. Test collisions.
-- [ ] Platform detection from URL: `meet.google.com` → meet, `teams.microsoft.com|teams.live.com` → teams, `*.zoom.us` → zoom, else unknown.
+- [x] `src/store/mod.rs` — open DB at `paths::db_path()`. Apply migrations via `PRAGMA user_version`. Migration v1 = SPEC §3.2 schema. Set `journal_mode=WAL`, `foreign_keys=ON`. Functions: `insert_meeting`, `update_meeting`, `get_meeting(id_or_slug)`, `list_meetings(filters)`, `delete_meeting(id)`, `list_orphan_sessions()`, `upsert_session`, `delete_session`. Test: open in-memory, run migration, round-trip a meeting.
+- [x] `src/recall/mod.rs` — port `.legacy-reference/meeting/recall.rs`. Adapt error type from `anyhow::Result` to our `Error`. Keep the same struct names (`RecallClient`, `BotStatus`, etc). Add a `RecallApi` trait so we can mock in tests. (Trait gained `delete_bot` and `check` — needed by `run` SIGINT cleanup and `secret check`.)
+- [x] `src/notes/mod.rs` — port `.legacy-reference/meeting/claude.rs`. Tera template rendering. Functions: `generate_notes(transcript_md, context, prompt_template) -> Result<String>`. (Simplified shape: pipes prompt body via stdin to `claude --print` rather than passing transcript as a file like the legacy code did. Adequate for v0.1.)
+- [x] `prompts/notes.md.tera` — copy from `.legacy-reference/meeting/prompts/notes.md.tera`, embed via `include_str!`. (Adapted: legacy version asked Claude to read the transcript from a file; v0.1 inlines the transcript into the prompt since we pipe the prompt over stdin and don't stage temp files.)
+- [x] `src/bundle/mod.rs` — write `meeting.toml` + `transcript.jsonl` + `transcript.md` + `notes.md` to a target dir. Tar stream variant for `--out -`.
+- [x] `src/session/mod.rs` — JSON serialize/deserialize for the `sessions.state_json` blob. Phase enum from SPEC §8.
+- [x] `src/search/mod.rs` — `LIKE`-based across `title`, `notes_md`, `transcript_md`. Snippet extraction (`±--context` chars around each match). Multi-word AND. Score = match count.
+- [x] Slug generation helper (`src/util/slug.rs`): title-slugified + ISO date; on collision append `-2`, `-3`. Test collisions.
+- [x] Platform detection from URL (`src/util/platform.rs`): `meet.google.com` → meet, `teams.microsoft.com|teams.live.com` → teams, `*.zoom.us` → zoom, else unknown.
 
 ### Commands (implement in this order)
 
-- [ ] `secret` — `set` (read stdin), `get` (`--reveal`), `delete`, `check` (HEAD `/bot` against Recall). Test: round-trip via a mock keyring backend.
-- [ ] `import` — parse `.jsonl`, `.vtt`, `.srt`, `.txt`. Insert meeting + transcript_md (rendered). `--notes-file` short-circuits notes generation. Tests: one fixture per format.
-- [ ] `show` — fetch by id or slug. Default = metadata table. `--transcript` / `--notes` / `--json`.
-- [ ] `list` — filters: `--since`, `--tag`, `--status`, `--all`, `--limit`. Hide `cancelled` by default.
-- [ ] `export` — write bundle to `<out>/<slug>/`, default CWD. `--force` overwrites. `--out -` streams tar to stdout. `--format jsonl|md|all`.
-- [ ] `search` — call `src/search/`, render snippets with highlighted match. `--no-snippets`, `--in`, `--context`, `--limit`, plus `list`-style filter flags.
-- [ ] `notes` — read `transcript_md` from DB, render template, shell out to `claude --print`. `--prompt` override. Refuse to overwrite without `--force`.
-- [ ] `fetch` — given `--bot-id`, call `recall.get_transcript`, insert as a new meeting. `--notes` triggers notes after.
-- [ ] `run` — full flow per SPEC §5.1. SIGINT handler for `cancelled` cleanup. `--resume` reads sessions row. `--dry-run` validates and exits.
-- [ ] `clean` — delete sessions for terminal meetings + orphans >24h. `--older-than <dur>` cascade-deletes meetings.
+- [x] `secret` — `set` (read stdin), `get` (`--reveal`), `delete`, `check` (HEAD `/bot` against Recall). (Used `GET /bot` rather than HEAD — Recall returns 401 / 200 cleanly on GET; HEAD support is undocumented.) Mask helper covered by unit tests.
+- [x] `import` — parse `.jsonl`, `.vtt`, `.srt`, `.txt`. Insert meeting + transcript_md (rendered). `--notes-file` short-circuits notes generation. Parsers + render covered by unit tests; integration round-trip in `tests/import_export_roundtrip.rs`.
+- [x] `show` — fetch by id or slug. Default = metadata table. `--transcript` / `--notes` / `--json`.
+- [x] `list` — filters: `--since`, `--tag`, `--status`, `--all`, `--limit`. Hide `cancelled` by default.
+- [x] `export` — write bundle to `<out>/<slug>/`, default CWD. `--force` overwrites. `--out -` streams tar to stdout. `--format jsonl|md|all`.
+- [x] `search` — call `src/search/`, render snippets with highlighted match. `--no-snippets`, `--in`, `--context`, `--limit`, plus `list`-style filter flags. (Highlight is plain ellipsis-bracketed snippets; no ANSI bolding yet.)
+- [x] `notes` — read `transcript_md` from DB, render template, shell out to `claude --print`. `--prompt` override. Refuse to overwrite without `--force`.
+- [x] `fetch` — given `--bot-id`, call `recall.get_transcript`, insert as a new meeting. `--notes` triggers notes after.
+- [x] `run` — full flow per SPEC §5.1. SIGINT handler for `cancelled` cleanup. `--resume` reads sessions row. `--dry-run` validates and exits.
+- [x] `clean` — delete sessions for terminal meetings + orphans >24h. `--older-than <dur>` cascade-deletes meetings.
 
 ### Integration tests
 
-- [ ] `tests/import_export_roundtrip.rs` — `import` a fixture, `export` it, byte-compare.
-- [ ] `tests/search.rs` — seed N meetings, exercise filters and snippets.
-- [ ] `tests/migrations.rs` — fresh DB, applied migrations match expected schema.
-- [ ] Recall integration test gated on `MOOT_RECALL_INTEGRATION=1` env (skipped in CI by default).
+- [x] `tests/import_export_roundtrip.rs` — `import` a fixture, `export` it, byte-compare. (Exercises the same code path through Bundle::build rather than spawning the binary.)
+- [x] `tests/search.rs` — seed N meetings, exercise filters and snippets.
+- [x] `tests/migrations.rs` — fresh DB, applied migrations match expected schema.
+- [x] Recall integration test gated on `MOOT_RECALL_INTEGRATION=1` env (skipped in CI by default).
 
 🚦 **GATE 3**: tell the user the binary is ready for a real-world smoke test. Provide a one-liner: `MOOT_RECALL_API_KEY=... cargo run -- run --url <real meet url> --notes`. Wait for results.
 
@@ -209,3 +209,4 @@ Update this section after each phase or significant pause.
 - 2026-04-29: Plan written. SPEC, README, LICENSE in place. `.legacy-reference/` populated. Awaiting Phase 1 kickoff.
 - 2026-04-29: Phase 1 complete. Repo created at Battle-Creek-LLC/moot. Scaffold committed (root commit `d0aa8be`). CI run [25119628692](https://github.com/Battle-Creek-LLC/moot/actions/runs/25119628692) passed in 1m13s. GATE 1 reached.
 - 2026-04-29: Phase 2 complete. CLI tree scaffolded; all ten verbs print "not yet implemented" and exit 1. Commit `704f6b8`. CI run [25120194958](https://github.com/Battle-Creek-LLC/moot/actions/runs/25120194958) passed in 1m17s. GATE 2 reached.
+- 2026-04-29: Phase 3 complete. All ten verbs implemented. 33 unit + 7 integration tests passing locally. Smoke-tested import → list → show → search → export end-to-end against /tmp/moot-test. GATE 3 reached — needs a real-world `moot run --url <meet>` smoke test from the user before tagging v0.1.0.

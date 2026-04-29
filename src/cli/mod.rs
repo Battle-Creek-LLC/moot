@@ -92,9 +92,3 @@ pub struct Context {
     pub json: bool,
 }
 
-/// Phase 2 stub: print a placeholder message to stderr and exit 1. Each
-/// subcommand calls this until Phase 3 replaces it with real logic.
-fn unimplemented(verb: &'static str) -> Result<()> {
-    eprintln!("moot {verb}: not yet implemented");
-    std::process::exit(1);
-}
