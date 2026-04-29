@@ -21,7 +21,7 @@ directories = "5"
 ulid = "1"
 slug = "0.1"
 tracing = "0.1"
-tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt", "json"] }
 thiserror = "1"
 anyhow = "1"
 serde = { version = "1", features = ["derive"] }

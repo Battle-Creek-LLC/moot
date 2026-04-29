@@ -36,18 +36,18 @@ This document drives the build of Moot v0.1.0 end-to-end. Read `SPEC.md` for des
 
 Goal: every command in `--help`, every subcommand prints "not yet implemented" and exits 1. No real logic.
 
-- [ ] `src/main.rs` — `tokio::main`, parse args, dispatch
-- [ ] `src/lib.rs` — public re-exports for testing
-- [ ] `src/error.rs` — `thiserror` enum with variants from SPEC §10 (`Config`, `Keychain`, `Recall`, `Db`, `Notes`, `Fs`, `Cli`)
-- [ ] `src/logging.rs` — `tracing-subscriber` setup, respect `MOOT_LOG`, `MOOT_NO_COLOR`, `--json` mode
-- [ ] `src/cli/mod.rs` — top-level clap `#[derive(Parser)]` with all 10 subcommands
-- [ ] `src/cli/{run,fetch,import,notes,export,list,show,search,clean,secret}.rs` — each is a clap subcommand struct + a stub `pub async fn execute(...) -> Result<()> { todo!("not yet implemented") }`
-- [ ] `src/paths/mod.rs` — `ProjectDirs::from("dev", "battlecreek", "moot")`. Functions: `db_path()`, `config_path()`. Honor `--db` override and `MOOT_DB`.
-- [ ] `src/secrets/mod.rs` — `keyring::Entry::new("moot", "recall-api-key")`. `get()` falls back to `MOOT_RECALL_API_KEY`. Used by `cli::secret` later.
-- [ ] `cargo run -- --help` shows the 10-verb tree from SPEC §5
-- [ ] `cargo run -- run --help` shows §5.1's flags
-- [ ] Commit: `feat: scaffold cli command tree`
-- [ ] Push
+- [x] `src/main.rs` — `tokio::main`, parse args, dispatch
+- [x] `src/lib.rs` — public re-exports for testing
+- [x] `src/error.rs` — `thiserror` enum with variants from SPEC §10 (`Config`, `Keychain`, `Recall`, `Db`, `Notes`, `Fs`, `Cli`)
+- [x] `src/logging.rs` — `tracing-subscriber` setup, respect `MOOT_LOG`, `MOOT_NO_COLOR`, `--json` mode (added `json` feature to `tracing-subscriber` so `--json` flips logs to structured stderr; lockfile updated.)
+- [x] `src/cli/mod.rs` — top-level clap `#[derive(Parser)]` with all 10 subcommands
+- [x] `src/cli/{run,fetch,import,notes,export,list,show,search,clean,secret}.rs` — each is a clap subcommand struct + a stub `pub async fn execute(...) -> Result<()> { ... }` (stubs print `moot <verb>: not yet implemented` to stderr and `process::exit(1)` directly — cleaner than routing through the error enum for what is a temporary placeholder, since none of the seven variants describe "verb is unimplemented" honestly.)
+- [x] `src/paths/mod.rs` — `ProjectDirs::from("dev", "battlecreek", "moot")`. Functions: `db_path()`, `config_path()`. Honor `--db` override and `MOOT_DB`.
+- [x] `src/secrets/mod.rs` — `keyring::Entry::new("moot", "recall-api-key")`. `get()` falls back to `MOOT_RECALL_API_KEY`. Used by `cli::secret` later.
+- [x] `cargo run -- --help` shows the 10-verb tree from SPEC §5
+- [x] `cargo run -- run --help` shows §5.1's flags
+- [x] Commit: `feat: scaffold cli command tree`
+- [x] Push
 
 🚦 **GATE 2**: confirm `--help` matches SPEC §5 visually. Continue.
 
