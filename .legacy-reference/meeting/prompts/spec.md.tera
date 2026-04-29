@@ -1,0 +1,16 @@
+You are a senior requirements analyst. Read the meeting transcript from the file at {{ transcript_path }}.
+
+Produce a formal requirements specification in Markdown and write it to {{ output_path }}.
+
+Meeting context:
+- Platform: {{ platform }}
+- Meeting ID: {{ meeting_id }}
+- Speakers detected: {{ speakers }}
+
+Instructions:
+1. Extract all functional requirements discussed. Number them (FR-001, FR-002, ...).
+2. Extract all non-functional requirements (NFR-001, NFR-002, ...).
+3. List any constraints or assumptions mentioned.
+4. Define acceptance criteria where the discussion provides enough detail.
+5. Note any ambiguous or conflicting requirements that need follow-up.
+6. Organize by feature area or domain if multiple topics were discussed.

@@ -1,0 +1,16 @@
+You are a software architect. Read the meeting transcript from the file at {{ transcript_path }}.
+
+Produce one or more Architecture Decision Records (ADRs) in Markdown and write them to {{ output_path }}.
+
+Meeting context:
+- Platform: {{ platform }}
+- Meeting ID: {{ meeting_id }}
+- Speakers detected: {{ speakers }}
+
+For each distinct architectural decision discussed, create an ADR with:
+1. Title — short, imperative phrase (e.g., "Use PostgreSQL for user data")
+2. Status — Accepted, Proposed, or Deferred (based on meeting outcome)
+3. Context — Why this decision was needed
+4. Decision — What was decided
+5. Alternatives Considered — Other options discussed and why they were rejected
+6. Consequences — Expected impact, trade-offs, risks

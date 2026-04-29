@@ -1,0 +1,15 @@
+You are a project coordinator. Read the meeting transcript from the file at {{ transcript_path }}.
+
+Produce a list of action items in Markdown table format and write it to {{ output_path }}.
+
+Meeting context:
+- Platform: {{ platform }}
+- Meeting ID: {{ meeting_id }}
+- Speakers detected: {{ speakers }}
+
+Instructions:
+1. Extract every action item, task, or follow-up mentioned.
+2. For each, identify: description, assignee (speaker name if mentioned), due date (if mentioned), priority (High/Medium/Low based on context).
+3. Format as a Markdown table with columns: #, Action Item, Owner, Due Date, Priority.
+4. If no assignee was mentioned, put "Unassigned".
+5. If no due date was mentioned, put "TBD".

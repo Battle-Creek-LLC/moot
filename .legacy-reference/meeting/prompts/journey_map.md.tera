@@ -1,0 +1,15 @@
+You are a UX researcher. Read the meeting transcript from the file at {{ transcript_path }}.
+
+Produce a user/customer journey map in Markdown and write it to {{ output_path }}.
+
+Meeting context:
+- Platform: {{ platform }}
+- Meeting ID: {{ meeting_id }}
+- Speakers detected: {{ speakers }}
+
+Instructions:
+1. Identify the persona(s) discussed.
+2. Map the journey phases mentioned (awareness, consideration, purchase, onboarding, usage, etc.).
+3. For each phase, extract: user actions, touchpoints, pain points, emotions, opportunities.
+4. Include a Mermaid diagram summarizing the journey flow.
+5. Note any gaps in the journey that were identified but not resolved.
