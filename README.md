@@ -27,11 +27,19 @@ $ moot run --url https://meet.google.com/abc-defg-hij --notes
 
 ## Install
 
+Homebrew (macOS, Linux):
+
+```sh
+brew install Battle-Creek-LLC/tap/moot
+```
+
+Cargo:
+
 ```sh
 cargo install moot
 ```
 
-Pre-built binaries are published on the [releases page](https://github.com/Battle-Creek-LLC/moot/releases) for Linux (x86_64, aarch64) and macOS (x86_64, aarch64).
+Pre-built binaries are also published on the [releases page](https://github.com/Battle-Creek-LLC/moot/releases) for Linux (x86_64, aarch64), macOS (x86_64, aarch64), and Windows (x86_64).
 
 ## Setup
 

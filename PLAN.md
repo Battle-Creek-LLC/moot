@@ -98,7 +98,7 @@ Order is dependency-driven. Each step ends with a green `cargo test`, a `CHANGEL
 - [x] `git push origin main`.
 - [x] `git tag v0.1.0 && git push origin v0.1.0`.
 - [x] Watch the release workflow: confirm 5 binaries uploaded to the GitHub Release, confirm `cargo publish` succeeded. (Hit two snags: the upload matrix raced before any GitHub Release existed, so I created one manually with `gh release create v0.1.0` and re-dispatched. The publish step was guarded by `if: github.event_name == 'push'`, which was wrong for the dispatch path — fixed in commit `b4015eb` so it runs on workflow_dispatch too. Then `cargo publish` failed once with "verified email required"; user verified email at crates.io, and the next dispatch succeeded. Final run [25123646480](https://github.com/Battle-Creek-LLC/moot/actions/runs/25123646480), crate live at [crates.io/crates/moot](https://crates.io/crates/moot).)
-- [x] Open a PR against `sprouted-dev/homebrew-tap` adding `Formula/moot.rb` pointing at the new release tarballs (sha256s from the workflow output). [PR #1](https://github.com/sprouted-dev/homebrew-tap/pull/1) — opened from `jstockdi/homebrew-tap:add-moot-formula` since I don't have direct write access to the tap.
+- [x] Stand up `Battle-Creek-LLC/homebrew-tap` and push `Formula/moot.rb` pointing at the v0.1.0 release tarballs (sha256s from the workflow output). (Originally tried opening a PR against sprouted-dev/homebrew-tap; on reflection a Battle-Creek-LLC-owned tap keeps distribution alongside the project, so the PR was closed and the tap was created in-org instead.)
 
 🚦 **GATE 4**: announce v0.1.0. Done.
 
@@ -154,7 +154,7 @@ predicates = "3"
 - Bot display name in calls (default): `Moot`
 - GitHub repo: `Battle-Creek-LLC/moot`
 - crates.io: `moot` (verified available 2026-04-29)
-- Homebrew tap: `sprouted-dev/homebrew-tap`, formula `moot.rb`
+- Homebrew tap: `Battle-Creek-LLC/homebrew-tap`, formula `moot.rb`
 - License: MIT
 - Author: `Jonathan Stockdill`
 - XDG paths: `ProjectDirs::from("dev", "battlecreek", "moot")`
@@ -210,4 +210,4 @@ Update this section after each phase or significant pause.
 - 2026-04-29: Phase 1 complete. Repo created at Battle-Creek-LLC/moot. Scaffold committed (root commit `d0aa8be`). CI run [25119628692](https://github.com/Battle-Creek-LLC/moot/actions/runs/25119628692) passed in 1m13s. GATE 1 reached.
 - 2026-04-29: Phase 2 complete. CLI tree scaffolded; all ten verbs print "not yet implemented" and exit 1. Commit `704f6b8`. CI run [25120194958](https://github.com/Battle-Creek-LLC/moot/actions/runs/25120194958) passed in 1m17s. GATE 2 reached.
 - 2026-04-29: Phase 3 complete. All ten verbs implemented. 33 unit + 7 integration tests passing locally and on CI run [25121777777](https://github.com/Battle-Creek-LLC/moot/actions/runs/25121777777). Smoke-tested import → list → show → search → export end-to-end against /tmp/moot-test. GATE 3 reached — needs a real-world `moot run --url <meet>` smoke test from the user before tagging v0.1.0.
-- 2026-04-29: Smoke test passed. v0.1.0 tagged, GitHub Release published with 5 binaries + checksums, crate published to crates.io, homebrew-tap PR opened at sprouted-dev/homebrew-tap#1. GATE 4 reached.
+- 2026-04-29: Smoke test passed. v0.1.0 tagged, GitHub Release published with 5 binaries + checksums, crate published to crates.io, homebrew tap stood up at [Battle-Creek-LLC/homebrew-tap](https://github.com/Battle-Creek-LLC/homebrew-tap) with `Formula/moot.rb`. `brew install Battle-Creek-LLC/tap/moot` works. GATE 4 reached.
