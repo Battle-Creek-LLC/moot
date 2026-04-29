@@ -56,7 +56,7 @@ Single-binary, single-crate Rust application. Async runtime is `tokio` (needed b
 
 ### 3.1 Database location (XDG)
 
-Resolved via the `directories` crate (`ProjectDirs::from("ai", "Moot", "moot")`):
+Resolved via the `directories` crate (`ProjectDirs::from("dev", "battlecreek", "moot")` — produces the bundle id `dev.battlecreek.moot` on macOS shown below):
 
 | OS      | Default DB path                                                 |
 |---------|-----------------------------------------------------------------|
