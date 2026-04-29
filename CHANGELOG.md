@@ -37,3 +37,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `notes_md`, `transcript_md`, with snippet extraction.
 - `util` helpers: platform detection, slug + collision disambiguation,
   duration parsing.
+- `secret` command: `set` reads stdin, `get` masks by default (`--reveal`
+  to print), `delete` clears the keychain, `check` verifies the key
+  against the Recall.ai API.
+- `import` command: parses `.jsonl`, `.vtt`, `.srt`, `.txt` transcripts;
+  derives speakers, renders `transcript_md` and `transcript_jsonl`,
+  inserts a meeting row. `--notes` shells out to Claude; `--notes-file`
+  uses provided markdown.
+- `transcript` module: shared utterance type and the four parsers.
+- `show` command: metadata table by default; `--transcript`, `--notes`,
+  and `--json` flags honored.
+- `list` command: filters `--since`, `--tag`, `--status`, `--limit`,
+  `--all`. `cancelled` meetings are hidden by default.

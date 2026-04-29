@@ -12,4 +12,5 @@ pub mod search;
 pub mod secrets;
 pub mod session;
 pub mod store;
+pub mod transcript;
 pub mod util;

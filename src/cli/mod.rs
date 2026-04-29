@@ -13,6 +13,7 @@ pub mod fetch;
 pub mod import;
 pub mod list;
 pub mod notes;
+pub mod render;
 pub mod run;
 pub mod search;
 pub mod secret;
